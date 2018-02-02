@@ -29,7 +29,7 @@ public class Client {
 		String serverResponse = "";
 		while(serverResponse.indexOf("disconnected") == -1)
 		{	
-			System.out.println("Enter the expression");
+			System.out.print("Enter the expression\n>>> ");
 			clientInput = sc.nextLine();
 			dOut.writeUTF(clientInput);
 		//	dOut.flush();
