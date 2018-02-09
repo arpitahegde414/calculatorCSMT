@@ -45,4 +45,16 @@ public class Matrix<T extends Number> implements Operand{
 	public void set(int x, int y, T val) {
 		value.get(x).set(y, val);
 	}
+	
+//	Method to display Matrix
+	public String show() {
+		String result = "\n";
+		ArrayList<Integer> shapeMat = shape();
+		for (int i = 0; i < shapeMat.get(0); i++) {
+			for (int j = 0; j < shapeMat.get(1); j++) {
+				result += value.get(i).get(j) + "\t";
+			}	result += "\n";
+		}
+		return result;
+	}
 }

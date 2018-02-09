@@ -10,4 +10,8 @@ public class RealNumber<T extends Number> implements Operand{
 	public Double value() {
 		return new Double(value.doubleValue());
 	}
+	
+	public String show() {
+		return String.valueOf(value);
+	}
 }

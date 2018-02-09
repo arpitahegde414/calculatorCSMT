@@ -1,5 +1,4 @@
 package calculatorLogic;
-import operands.Matrix;
 import operands.Operand;
 
 public interface CalculatorInterface {

@@ -1,33 +1,35 @@
-package CalculatorLogic;
+package calculatorLogic;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.*;
 import operands.Operand;
+import operands.RealNumber;
+import operands.StatVector;
 
 public class StatisticalOperations<T extends Number> implements StatisticalInterface{
 	
 	// this class has an array of numbers whose mean,mode,standard deviation, variance 
 	//private T[] a;
 	
-	 
-	
-	public <T extends Number> double add(T a, T b) {
-	return a.doubleValue() + b.doubleValue();
+//	method to add two numbers
+	BasicOperations basicCalc = new BasicOperations();
+	public <T extends Number> Operand add(Operand a, Operand b) {
+		return basicCalc.add(a, b);
     }
 
 //	method to subtract two numbers
-    public <T extends Number> double sub(T a,	T b) {
-	return a.doubleValue() - b.doubleValue();
+	public <T extends Number> Operand sub(Operand a, Operand b) {
+		return basicCalc.sub(a, b);
     }
 
-//    method to multiply two numbers
-    public <T extends Number> double mul(T a,	T b) {
-	return a.doubleValue() * b.doubleValue();
+//  method to multiply two numbers
+	public <T extends Number> Operand mul(Operand a, Operand b) {
+		return basicCalc.mul(a, b);
     }
 
-//    method to divide two numbers
-    public <T extends Number> double div(T a,	T b) {
-	return a.doubleValue() / b.doubleValue();
+//  method to divide two numbers
+	public <T extends Number> Operand div(Operand a, Operand b) {
+		return basicCalc.div(a, b);
     }
 
 
@@ -95,100 +97,101 @@ public class StatisticalOperations<T extends Number> implements StatisticalInter
   	public Double applyOp(char op,  Double b, Double a) {
     switch (op) {
       	case '+':
-      		return add(a,b);  // calling the business class 
+      		return (Double) add(new RealNumber(a), new RealNumber(b)).value();  // calling the business class 
       	case '-':
-      		return sub(a, b);
+      		return (Double) sub(new RealNumber(a), new RealNumber(b)).value();
       	case '*':
-      		return mul(a, b);
+      		return (Double) mul(new RealNumber(a), new RealNumber(b)).value();
       	case '/':
       		if (b == 0)
       			throw new UnsupportedOperationException("Cannot divide by zero");
-      		return div(a, b);
+      		return (Double) div(new RealNumber(a), new RealNumber(b)).value();
     }
     return 0.00;
     }
 
-  	public <T extends Number> double min(T a[]){
-		double minValue = a[0].doubleValue();
-	    for (int i = 1; i < a.length; i++) {
-	        if (a[i].doubleValue() < minValue) {
-	            minValue = a[i].doubleValue();
+  	public <T extends Number> RealNumber<T> min(StatVector<T> a){
+		double minValue = a.get(0).value();
+	    for (int i = 1; i < a.size(); i++) {
+	        if (a.get(i).value() < minValue) {
+	            minValue = a.get(i).value();
 	        }
 	    }
-	    return minValue;
+	    return new RealNumber(minValue);
 		
 	}
-	public <T extends Number> double max(T a[]){
-		double maxValue = a[0].doubleValue();
-	    for (int i = 1; i < a.length; i++) {
-	        if (a[i].doubleValue() > maxValue) {
-	            maxValue = a[i].doubleValue();
+	public <T extends Number> RealNumber<T> max(StatVector<T> a){
+		double maxValue = a.get(0).value();
+	    for (int i = 1; i < a.size(); i++) {
+	        if (a.get(i).value() > maxValue) {
+	            maxValue = a.get(i).value();
 	        }
 	    }
-	    return maxValue;
+	    return new RealNumber(maxValue);
 	}
-	public <T extends Number> double mean(T a[]){
+	public <T extends Number> RealNumber<T> mean(StatVector<T> a){
 	  
 	    double mean;
 	    double tot=0;
-		for(int i=0; i<a.length;i++)
+		for(int i=0; i<a.size();i++)
 	    {
-	    tot =tot+a[i].doubleValue();
+	    tot =tot+a.get(i).value();
 	    }
-	    mean = tot/a.length;
-	    return mean;
+	    mean = tot/a.size();
+	    return new RealNumber(mean);
 	}
-	public <T extends Number> double median(T a[]){
-		if(a.length%2==0)
-		return  ( a[a.length/2-1].doubleValue() + a[a.length/2].doubleValue() )/2;
+	public <T extends Number> RealNumber<T> median(StatVector<T> a){
+		if(a.size()%2==0)
+		return new RealNumber(( a.get(a.size()/2-1).value() + a.get(a.size()/2).value() )/2);
 		else 
-			return a[a.length/2].doubleValue();
+			return new RealNumber(a.get(a.size()/2).value());
 	}
 	
-	public <T extends Number> double mode(T a[]){
+	public <T extends Number> RealNumber<T> mode(StatVector<T> a){
         double mode = 0, maxCount = 0;
-        for (int i = 0; i < a.length; ++i) 
+        for (int i = 0; i < a.size(); ++i) 
         {  int count = 0;
-            for (int j = 0; j < a.length; ++j) 
+            for (int j = 0; j < a.size(); ++j) 
             {
-                if (a[j].doubleValue() == a[i].doubleValue())
+                if (a.get(j).value() == a.get(i).value())
                     ++count;
             }
             if (count > maxCount) 
             {
                 maxCount = count;
-                mode = a[i].doubleValue();
+                mode = a.get(i).value();
             }
         }
-        return mode;
+        return new RealNumber(mode);
 	
 	}
-	public <T extends Number> double variance(T a[]){
-		double mean=mean(a);
+	public <T extends Number> RealNumber<T> variance(StatVector<T> a){
+		double mean = mean(a).value();
 		double temp=0,diff,square;
-	    for(int i=0;i<a.length;i++)
+	    for(int i=0;i<a.size();i++)
 	    {
-	    	diff=a[i].doubleValue()-mean;
+	    	diff=a.get(i).value()-mean;
 	    	square=diff*diff;
 	    	temp+=square;
 	    }
-	    return temp/a.length;
+	    return new RealNumber(temp/a.size());
 	    
 	}
 	//returns standard deviation
-	public <T extends Number> double stddev(T a[]){ 
-	  return Math.sqrt(variance(a));
+	public <T extends Number> RealNumber<T> stddev(StatVector<T> a){ 
+	  return new RealNumber(Math.sqrt(variance(a).value()));
 	}
-	public <T extends Number> double skewness(T a[]){
+	
+	public <T extends Number> RealNumber<T> skewness(StatVector<T> a){
 		double temp=0,cube,diff;
-		double mean=mean(a);
-		for(int i=0;i<a.length;i++)
+		double mean= mean(a).value();
+		for(int i=0;i<a.size();i++)
 		{
-			diff=a[i].doubleValue()-mean;
+			diff=a.get(i).value()-mean;
 			cube=Math.pow(diff,3);              //skewness=
 			temp+=cube;
 		}
-		return temp/(a.length*Math.pow(stddev(a),3));
+		return new RealNumber(temp/(a.size()*Math.pow(stddev(a).value(),3)));
 	}
 	
 }

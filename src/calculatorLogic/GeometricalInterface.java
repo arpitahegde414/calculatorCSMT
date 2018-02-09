@@ -1,6 +1,6 @@
-package CalculatorLogic;
+package calculatorLogic;
 
-public interface GeometricalInterface {
+public interface GeometricalInterface extends CalculatorInterface {
    
    public <T extends Number>double sine(int deg );
    public <T extends Number>double cosine(int deg);

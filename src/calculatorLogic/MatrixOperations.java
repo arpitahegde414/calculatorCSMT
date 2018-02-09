@@ -1,6 +1,6 @@
 package calculatorLogic;
 import operands.*;
-import calculatorLogic.InvalidShapeException;
+import exceptions.InvalidShapeException;
 import java.util.ArrayList;
 
 public class MatrixOperations implements MatrixInterface {
@@ -124,16 +124,6 @@ public class MatrixOperations implements MatrixInterface {
 		return result;
 	}
 	
-//	Method to display Matrix
-	public <T extends Number> void show(Matrix<T> mat) {
-		ArrayList<Integer> shapeMat = mat.shape();
-		for (int i = 0; i < shapeMat.get(0); i++) {
-			for (int j = 0; j < shapeMat.get(1); j++) {
-				System.out.print(mat.get(i).get(j) + "\t");
-			}	System.out.println();
-		}
-	}
-	
 //	Adjoint of the matrix
 	public <T extends Number> Matrix<T> adjoint(Matrix<T> a) throws InvalidShapeException{
 		ArrayList<Integer> shapeA = a.shape();
@@ -158,6 +148,32 @@ public class MatrixOperations implements MatrixInterface {
 			}
 		}
 		
+		return result;
+	}
+	
+//	Returns identity matrix
+	public <T extends Number> Matrix<T> identity(int n) {
+		Matrix<T> result = new Matrix(n, n);
+		for (int i = 0; i < n; i++) {
+			result.set(i, i, (T) new Double(1));
+		}
+		return result;
+	}
+	
+//	Returns matrix of ones
+	public <T extends Number> Matrix<T> ones(int dim1, int dim2) {
+		Matrix<T> result = new Matrix(dim1, dim2);
+		for (int i = 0; i < dim1; i++) {
+			for (int j = 0; j < dim2; j++) {
+				result.set(i, j, (T) new Double(1));
+			}
+		}
+		return result;
+	}
+
+//	Returns matrix of ones
+	public <T extends Number> Matrix<T> zeros(int dim1, int dim2) {
+		Matrix<T> result = new Matrix(dim1, dim2);
 		return result;
 	}
 }

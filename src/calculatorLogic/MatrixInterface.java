@@ -1,4 +1,5 @@
 package calculatorLogic;
+import exceptions.InvalidShapeException;
 import operands.Matrix;
 import operands.Operand;
 
@@ -23,9 +24,6 @@ public interface MatrixInterface extends CalculatorInterface{
 	
 //	Determinant of the matrix
 	public <T extends Number> Double determinant(Matrix<T> mat) throws InvalidShapeException;
-	
-//	Method to display matrix
-	public <T extends Number> void show(Matrix<T> mat); 
 	
 //	Adjoint of the matrix
 	public <T extends Number> Matrix<T> adjoint(Matrix<T> mat) throws InvalidShapeException;
